@@ -1,0 +1,35 @@
+version: 0.10.0.{build}
+
+platform: x64
+
+clone_folder: c:\gopath\src\github.com\google\go-jsonnet
+
+environment:
+  GOPATH: c:\gopath
+
+install:
+  - echo %PATH%
+  - echo %GOPATH%
+  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  - go version
+  - go env
+
+build_script:
+  - go get .\jsonnet
+  - go build .\jsonnet
+
+artifacts:
+  - name: exe
+    path: jsonnet.exe
+
+deploy:
+  release: jsonnet-v0.10.0
+  description: 'Jsonnet build'
+  provider: GitHub
+  auth_token:
+    secure: Sz4CTP4sB/AXyT9Nmz2GjJ217A+NmQ1CWfO3jJLZRih9aif2Oq/POKZQ4/RCh8Bh
+  artifact: exe
+  draft: true
+  prerelease: true
+  on:
+    branch: appveyor
